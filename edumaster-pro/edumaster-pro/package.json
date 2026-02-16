@@ -1,0 +1,55 @@
+{
+  "name": "edumaster-pro-school-erp",
+  "version": "1.0.0",
+  "description": "Complete School Management ERP System with Advanced Features",
+  "main": "server-session-management.js",
+  "scripts": {
+    "start": "node server-session-management.js",
+    "start:basic": "node server.js",
+    "start:roles": "node server-dynamic-roles.js",
+    "start:complete": "node server-session-management.js",
+    "dev": "nodemon server-session-management.js",
+    "test": "echo 'Tests coming soon...'",
+    "init-db": "node scripts/init-database.js"
+  },
+  "keywords": [
+    "school",
+    "erp",
+    "education",
+    "management",
+    "student",
+    "teacher",
+    "attendance",
+    "fees",
+    "sessions",
+    "promotion",
+    "transfer"
+  ],
+  "author": "EduMaster Pro Team",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.5.0",
+    "cors": "^2.8.5",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "dotenv": "^16.3.1",
+    "express-validator": "^7.0.1",
+    "helmet": "^7.0.0",
+    "express-rate-limit": "^6.10.0",
+    "compression": "^1.7.4",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/edumaster-pro"
+  }
+}

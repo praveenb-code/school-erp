@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Portal - EduMaster Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #3b82f6;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --gray: #64748b;
+            --light-gray: #e2e8f0;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: var(--white);
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem 0;
+        }
+
+        .logo {
+            padding: 0 2rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo p {
+            font-size: 0.75rem;
+            color: var(--gray);
+            margin-top: 0.25rem;
+        }
+
+        .nav-menu {
+            padding: 2rem 0;
+        }
+
+        .nav-item {
+            padding: 0.75rem 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-item:hover {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 3px solid var(--primary);
+        }
+
+        .nav-item.active {
+            background: rgba(16, 185, 129, 0.2);
+            border-left: 3px solid var(--primary);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .topbar {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .content-area {
+            padding: 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--gray);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            background: rgba(16, 185, 129, 0.2);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border: none;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            color: var(--white);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Data Section */
+        .data-section {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            text-align: left;
+            padding: 1rem;
+            color: var(--gray);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .data-table tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-badge.present {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--primary);
+        }
+
+        .status-badge.absent {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        .logout-btn {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .logout-btn:hover {
+            background: var(--danger);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h1>EduMaster Pro</h1>
+                <p>Teacher Portal</p>
+            </div>
+
+            <nav class="nav-menu">
+                <div class="nav-item active">
+                    <span>📊</span>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-item">
+                    <span>👨‍🎓</span>
+                    <span>My Students</span>
+                </div>
+                <div class="nav-item">
+                    <span>✓</span>
+                    <span>Attendance</span>
+                </div>
+                <div class="nav-item">
+                    <span>📝</span>
+                    <span>Assignments</span>
+                </div>
+                <div class="nav-item">
+                    <span>📋</span>
+                    <span>Exams & Tests</span>
+                </div>
+                <div class="nav-item">
+                    <span>📚</span>
+                    <span>My Subjects</span>
+                </div>
+                <div class="nav-item">
+                    <span>📅</span>
+                    <span>My Timetable</span>
+                </div>
+                <div class="nav-item">
+                    <span>💬</span>
+                    <span>Messages</span>
+                </div>
+                <div class="nav-item">
+                    <span>📢</span>
+                    <span>Notices</span>
+                </div>
+                <div class="nav-item">
+                    <span>⚙️</span>
+                    <span>Settings</span>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="topbar">
+                <div>
+                    <h2 style="font-size: 1.25rem;">Welcome, Dr. Priya Verma</h2>
+                    <p style="color: var(--gray); font-size: 0.9rem;">Mathematics Teacher | EMP00001</p>
+                </div>
+                <div class="user-info">
+                    <span style="color: var(--gray); font-size: 0.9rem;">Monday, February 16, 2026</span>
+                    <div class="user-avatar">PV</div>
+                    <button class="logout-btn" onclick="logout()">Logout</button>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <div class="page-header">
+                    <h1 class="page-title">Teacher Dashboard</h1>
+                    <p class="page-subtitle">Here's your teaching overview for today</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">5</div>
+                                <div class="stat-label">Classes Assigned</div>
+                            </div>
+                            <div class="stat-icon">🏫</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">185</div>
+                                <div class="stat-label">Total Students</div>
+                            </div>
+                            <div class="stat-icon">👨‍🎓</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">12</div>
+                                <div class="stat-label">Pending Assignments</div>
+                            </div>
+                            <div class="stat-icon">📝</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">4</div>
+                                <div class="stat-label">Classes Today</div>
+                            </div>
+                            <div class="stat-icon">📅</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <button class="action-btn">📋 Mark Attendance</button>
+                    <button class="action-btn">📝 Create Assignment</button>
+                    <button class="action-btn">✍️ Enter Marks</button>
+                    <button class="action-btn">📊 View Reports</button>
+                </div>
+
+                <!-- Today's Schedule -->
+                <div class="data-section">
+                    <h2 class="section-title">Today's Schedule</h2>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Period</th>
+                                <th>Class</th>
+                                <th>Subject</th>
+                                <th>Room</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>08:00 - 08:45</td>
+                                <td>Period 1</td>
+                                <td>Class 10-A</td>
+                                <td>Mathematics</td>
+                                <td>Room 201</td>
+                                <td><span class="status-badge present">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>09:00 - 09:45</td>
+                                <td>Period 2</td>
+                                <td>Class 9-B</td>
+                                <td>Mathematics</td>
+                                <td>Room 201</td>
+                                <td><span class="status-badge present">In Progress</span></td>
+                            </tr>
+                            <tr>
+                                <td>10:00 - 10:45</td>
+                                <td>Period 3</td>
+                                <td>Class 11-A</td>
+                                <td>Mathematics</td>
+                                <td>Room 201</td>
+                                <td><span class="status-badge absent">Upcoming</span></td>
+                            </tr>
+                            <tr>
+                                <td>11:00 - 11:45</td>
+                                <td>Period 4</td>
+                                <td>Class 10-B</td>
+                                <td>Mathematics</td>
+                                <td>Room 201</td>
+                                <td><span class="status-badge absent">Upcoming</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Recent Student Performance -->
+                <div class="data-section">
+                    <h2 class="section-title">Recent Student Performance - Class 10-A</h2>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Roll No</th>
+                                <th>Last Test</th>
+                                <th>Marks</th>
+                                <th>Grade</th>
+                                <th>Attendance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Aarav Sharma</td>
+                                <td>001</td>
+                                <td>Algebra Test</td>
+                                <td>85/100</td>
+                                <td>A</td>
+                                <td>95%</td>
+                            </tr>
+                            <tr>
+                                <td>Diya Patel</td>
+                                <td>002</td>
+                                <td>Algebra Test</td>
+                                <td>92/100</td>
+                                <td>A+</td>
+                                <td>98%</td>
+                            </tr>
+                            <tr>
+                                <td>Arjun Singh</td>
+                                <td>003</td>
+                                <td>Algebra Test</td>
+                                <td>78/100</td>
+                                <td>B+</td>
+                                <td>92%</td>
+                            </tr>
+                            <tr>
+                                <td>Ananya Reddy</td>
+                                <td>004</td>
+                                <td>Algebra Test</td>
+                                <td>88/100</td>
+                                <td>A</td>
+                                <td>96%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.clear();
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Check if user is logged in
+        window.onload = function() {
+            const userRole = localStorage.getItem('userRole');
+            if (!userRole || userRole !== 'teacher') {
+                window.location.href = 'login.html';
+            }
+        };
+    </script>
+</body>
+</html>

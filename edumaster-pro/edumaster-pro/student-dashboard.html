@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal - EduMaster Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --secondary: #8b5cf6;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+            --success: #10b981;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --gray: #64748b;
+            --light-gray: #e2e8f0;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--white);
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem 0;
+        }
+
+        .logo {
+            padding: 0 2rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo p {
+            font-size: 0.75rem;
+            color: var(--gray);
+            margin-top: 0.25rem;
+        }
+
+        .student-profile {
+            padding: 1.5rem 2rem;
+            background: rgba(59, 130, 246, 0.1);
+            margin: 1rem 1rem 0;
+            border-radius: 1rem;
+        }
+
+        .profile-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 1rem;
+        }
+
+        .profile-name {
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-details {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .nav-menu {
+            padding: 2rem 0;
+        }
+
+        .nav-item {
+            padding: 0.75rem 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-item:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 3px solid var(--primary);
+        }
+
+        .nav-item.active {
+            background: rgba(59, 130, 246, 0.2);
+            border-left: 3px solid var(--primary);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            background: rgba(15, 23, 42, 0.3);
+        }
+
+        .topbar {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logout-btn {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .logout-btn:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .content-area {
+            padding: 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--gray);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-icon.blue {
+            background: rgba(59, 130, 246, 0.2);
+        }
+
+        .stat-icon.purple {
+            background: rgba(139, 92, 246, 0.2);
+        }
+
+        .stat-icon.green {
+            background: rgba(16, 185, 129, 0.2);
+        }
+
+        .stat-icon.orange {
+            background: rgba(245, 158, 11, 0.2);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Data Section */
+        .data-section {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            text-align: left;
+            padding: 1rem;
+            color: var(--gray);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .data-table tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .grade-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .grade-badge.a-plus {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+
+        .grade-badge.a {
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--primary);
+        }
+
+        .grade-badge.b {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--accent);
+        }
+
+        /* Assignment Card */
+        .assignment-card {
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .assignment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 0.75rem;
+        }
+
+        .assignment-title {
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+
+        .assignment-due {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+        }
+
+        .assignment-subject {
+            color: var(--gray);
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .assignment-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-small:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 50px;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h1>EduMaster Pro</h1>
+                <p>Student Portal</p>
+            </div>
+
+            <div class="student-profile">
+                <div class="profile-avatar">AS</div>
+                <div class="profile-name">Aarav Sharma</div>
+                <div class="profile-details">Class 10-A | Roll No: 001</div>
+                <div class="profile-details">Student ID: STU00001</div>
+            </div>
+
+            <nav class="nav-menu">
+                <div class="nav-item active">
+                    <span>📊</span>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-item">
+                    <span>📚</span>
+                    <span>My Courses</span>
+                </div>
+                <div class="nav-item">
+                    <span>📝</span>
+                    <span>Assignments</span>
+                </div>
+                <div class="nav-item">
+                    <span>📋</span>
+                    <span>Exam Results</span>
+                </div>
+                <div class="nav-item">
+                    <span>✓</span>
+                    <span>Attendance</span>
+                </div>
+                <div class="nav-item">
+                    <span>📅</span>
+                    <span>Timetable</span>
+                </div>
+                <div class="nav-item">
+                    <span>💰</span>
+                    <span>Fee Details</span>
+                </div>
+                <div class="nav-item">
+                    <span>📖</span>
+                    <span>Library</span>
+                </div>
+                <div class="nav-item">
+                    <span>💬</span>
+                    <span>Messages</span>
+                </div>
+                <div class="nav-item">
+                    <span>⚙️</span>
+                    <span>Profile Settings</span>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="topbar">
+                <div>
+                    <h2 style="font-size: 1.25rem;">Good Morning, Aarav! 👋</h2>
+                    <p style="color: var(--gray); font-size: 0.9rem;">Monday, February 16, 2026</p>
+                </div>
+                <div>
+                    <button class="logout-btn" onclick="logout()">Logout</button>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <div class="page-header">
+                    <h1 class="page-title">Student Dashboard</h1>
+                    <p class="page-subtitle">Track your academic progress and stay updated</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">95.2%</div>
+                                <div class="stat-label">Attendance</div>
+                            </div>
+                            <div class="stat-icon blue">✓</div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 95.2%"></div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">A</div>
+                                <div class="stat-label">Overall Grade</div>
+                            </div>
+                            <div class="stat-icon purple">📊</div>
+                        </div>
+                        <div style="color: var(--gray); font-size: 0.85rem; margin-top: 0.5rem;">
+                            Average: 87.5%
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">5</div>
+                                <div class="stat-label">Pending Assignments</div>
+                            </div>
+                            <div class="stat-icon orange">📝</div>
+                        </div>
+                        <div style="color: var(--danger); font-size: 0.85rem; margin-top: 0.5rem;">
+                            2 Due This Week
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">₹0</div>
+                                <div class="stat-label">Fee Pending</div>
+                            </div>
+                            <div class="stat-icon green">💰</div>
+                        </div>
+                        <div style="color: var(--success); font-size: 0.85rem; margin-top: 0.5rem;">
+                            All Paid
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Today's Classes -->
+                <div class="data-section">
+                    <h2 class="section-title">Today's Classes</h2>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Subject</th>
+                                <th>Teacher</th>
+                                <th>Room</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>08:00 - 08:45</td>
+                                <td>Mathematics</td>
+                                <td>Dr. Priya Verma</td>
+                                <td>Room 201</td>
+                                <td><span class="grade-badge a-plus">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>09:00 - 09:45</td>
+                                <td>English</td>
+                                <td>Mr. Rajesh Kumar</td>
+                                <td>Room 102</td>
+                                <td><span class="grade-badge a">In Progress</span></td>
+                            </tr>
+                            <tr>
+                                <td>10:00 - 10:45</td>
+                                <td>Science</td>
+                                <td>Dr. Anita Singh</td>
+                                <td>Lab 1</td>
+                                <td><span class="grade-badge b">Upcoming</span></td>
+                            </tr>
+                            <tr>
+                                <td>11:00 - 11:45</td>
+                                <td>Social Studies</td>
+                                <td>Mrs. Kavita Sharma</td>
+                                <td>Room 305</td>
+                                <td><span class="grade-badge b">Upcoming</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pending Assignments -->
+                <div class="data-section">
+                    <h2 class="section-title">Pending Assignments</h2>
+                    
+                    <div class="assignment-card">
+                        <div class="assignment-header">
+                            <div>
+                                <div class="assignment-title">Algebra Problem Set - Chapter 5</div>
+                                <div class="assignment-subject">Mathematics</div>
+                            </div>
+                            <div class="assignment-due">Due: Feb 18</div>
+                        </div>
+                        <div style="color: var(--gray); font-size: 0.9rem;">
+                            Solve problems 1-20 from the textbook
+                        </div>
+                        <div class="assignment-actions">
+                            <button class="btn-small btn-primary">Submit Assignment</button>
+                            <button class="btn-small btn-secondary">View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="assignment-card">
+                        <div class="assignment-header">
+                            <div>
+                                <div class="assignment-title">Essay on Climate Change</div>
+                                <div class="assignment-subject">English</div>
+                            </div>
+                            <div class="assignment-due">Due: Feb 20</div>
+                        </div>
+                        <div style="color: var(--gray); font-size: 0.9rem;">
+                            Write a 500-word essay on climate change impacts
+                        </div>
+                        <div class="assignment-actions">
+                            <button class="btn-small btn-primary">Submit Assignment</button>
+                            <button class="btn-small btn-secondary">View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="assignment-card">
+                        <div class="assignment-header">
+                            <div>
+                                <div class="assignment-title">Physics Lab Report</div>
+                                <div class="assignment-subject">Science</div>
+                            </div>
+                            <div class="assignment-due">Due: Feb 22</div>
+                        </div>
+                        <div style="color: var(--gray); font-size: 0.9rem;">
+                            Submit the Newton's Laws experiment report
+                        </div>
+                        <div class="assignment-actions">
+                            <button class="btn-small btn-primary">Submit Assignment</button>
+                            <button class="btn-small btn-secondary">View Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Exam Results -->
+                <div class="data-section">
+                    <h2 class="section-title">Recent Exam Results</h2>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Exam</th>
+                                <th>Date</th>
+                                <th>Marks</th>
+                                <th>Grade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Mathematics</td>
+                                <td>Algebra Test</td>
+                                <td>Feb 10, 2026</td>
+                                <td>85/100</td>
+                                <td><span class="grade-badge a">A</span></td>
+                            </tr>
+                            <tr>
+                                <td>English</td>
+                                <td>Literature Quiz</td>
+                                <td>Feb 08, 2026</td>
+                                <td>92/100</td>
+                                <td><span class="grade-badge a-plus">A+</span></td>
+                            </tr>
+                            <tr>
+                                <td>Science</td>
+                                <td>Physics Test</td>
+                                <td>Feb 05, 2026</td>
+                                <td>88/100</td>
+                                <td><span class="grade-badge a">A</span></td>
+                            </tr>
+                            <tr>
+                                <td>Social Studies</td>
+                                <td>History Quiz</td>
+                                <td>Feb 03, 2026</td>
+                                <td>81/100</td>
+                                <td><span class="grade-badge b">B+</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.clear();
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Check if user is logged in
+        window.onload = function() {
+            const userRole = localStorage.getItem('userRole');
+            if (!userRole || userRole !== 'student') {
+                window.location.href = 'login.html';
+            }
+        };
+    </script>
+</body>
+</html>
